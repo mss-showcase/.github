@@ -1,0 +1,2 @@
+# .github
+Magnificent seven showcase

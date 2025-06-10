@@ -12,20 +12,36 @@ And finally, there will be a React(-Native) application project that will produc
 [EventBridge cron]
        ↓
   ┌────────────┐
-  │ stock-data │───┐
-  └────────────┘   │
-                   ▼
-              [S3 bucket]
-                   │
-            ┌──────┴──────┐
-            ▼             ▼
-      [data-proc]     [cache-flush]
-         (Lambda)         (Lambda)
-
-Frontend (web/mobil)
-     │        ▲
-     ▼        │
- [main-backend] ────────────────► [signed-url-provider]
-         Lambda                      (Lambda)
+  │ stock-data │──────────────┐
+  └────────────┘              │
+                              ▼
+                         [S3 bucket]
+                              │
+                        ┌─────┴─────┐
+                        ▼           ▼
+        ┌────────────────────┐   [cache-flush]
+        │ stock-data-to-dynamo │     Lambda
+        └────────────────────┘
+                        │
+                        ▼
+                 [DynamoDB ticks]
+                        │
+                        ▼
+                [main-backend Lambda]
+                  - GET /tickers
+                  - GET /tickers/:symbol
+                        │
+                        ▼
+                  [API Gateway]
+                        │
+                        ▼
+         ┌───────────────────────────────┐
+         │           Clients             │
+         │  ┌──────────────────────────┐ │
+         │  │  frontend (web - React)  │ │
+         │  ├──────────────────────────┤ │
+         │  │  mobile app (ReactNative)│ │
+         │  └──────────────────────────┘ │
+         └───────────────────────────────┘
 
 ```

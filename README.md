@@ -8,40 +8,34 @@ After that a data processor lambda will do some calculation and place it to eith
 
 And finally, there will be a React(-Native) application project that will produce (I hope) a unified client application for mobile / web.
 
-```
-[EventBridge cron]
-       ↓
-  ┌────────────┐
-  │ stock-data │──────────────┐
-  └────────────┘              │
-                              ▼
-                         [S3 bucket]
-                              │
-                        ┌─────┴─────┐
-                        ▼           ▼
-        ┌────────────────────┐   [cache-flush]
-        │ stock-data-to-dynamo │     Lambda
-        └────────────────────┘
-                        │
-                        ▼
-                 [DynamoDB ticks]
-                        │
-                        ▼
-                [main-backend Lambda]
-                  - GET /tickers
-                  - GET /tickers/:symbol
-                        │
-                        ▼
-                  [API Gateway]
-                        │
-                        ▼
-         ┌───────────────────────────────┐
-         │           Clients             │
-         │  ┌──────────────────────────┐ │
-         │  │  frontend (web - React)  │ │
-         │  ├──────────────────────────┤ │
-         │  │  mobile app (ReactNative)│ │
-         │  └──────────────────────────┘ │
-         └───────────────────────────────┘
+```mermaid
+flowchart TB
+  subgraph "Alpha Vantage"
+    alpha[Alpha Vantage REST API]
+  end
 
-```
+  subgraph "AWS Cloud"
+    cron[EventBridge cron]
+    stock[stock-data Lambda]
+    s3[S3 bucket]
+    proc[stock-data-to-dynamo Lambda]
+    db[DynamoDB ticks]
+    backend[main-backend Lambda]
+    api[API Gateway]
+    
+    cron --> |schedules| stock
+    alpha --> |polling| stock
+    stock --> |write json file| s3
+    s3 --> |read json file| proc
+    proc --> |write data to tables| db
+    db --> |read data| backend
+    backend --> |serve requests| api
+  end
+
+  subgraph "Clients"
+    webfrontend[web app]
+    mobilefrontend[mobile app]
+  end
+
+  api --> webfrontend
+  api --> mobilefrontend

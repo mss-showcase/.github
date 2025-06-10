@@ -14,7 +14,7 @@ flowchart TB
     alpha[Alpha Vantage REST API]
   end
 
-  subgraph "AWS Cloud"
+  subgraph "AWSCloud"
     subgraph "Event scheduling"
       cron[EventBridge cron]
     end
@@ -22,7 +22,6 @@ flowchart TB
     subgraph "Lambdas"
       stock[stock-data Lambda]
       proc[stock-data-to-dynamo Lambda]
-      cache[cache-flush Lambda]
       backend[main-backend Lambda]
     end
 
@@ -54,11 +53,10 @@ flowchart TB
   proc -->|write to table| dynamo
   dynamo -->|read| backend
   backend -->|serve API| api
-  distribution --> |read & cache| s3data
+  distribution --> |read frontend static files & cache| s3data
 
   gha_build -->|upload artifacts| s3build
-  gha_deploy -->|terraform apply| s3build
-  gha_deploy -->|terraform apply| Lambdas & infra
+  gha_deploy -->|terraform apply| AWSCloud
 
   api -->|serve| webfrontend[web app]
   api -->|serve| mobilefrontend[mobile app]

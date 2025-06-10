@@ -10,32 +10,57 @@ And finally, there will be a React(-Native) application project that will produc
 
 ```mermaid
 flowchart TB
-  subgraph "Alpha Vantage"
+  subgraph "External"
     alpha[Alpha Vantage REST API]
   end
 
   subgraph "AWS Cloud"
-    cron[EventBridge cron]
-    stock[stock-data Lambda]
-    s3[S3 bucket]
-    proc[stock-data-to-dynamo Lambda]
-    db[DynamoDB ticks]
-    backend[main-backend Lambda]
-    api[API Gateway]
+    subgraph "Event scheduling"
+      cron[EventBridge cron]
+    end
     
-    cron --> |schedules| stock
-    alpha --> |polling| stock
-    stock --> |write json file| s3
-    s3 --> |read json file| proc
-    proc --> |write data to tables| db
-    db --> |read data| backend
-    backend --> |serve requests| api
+    subgraph "Lambdas"
+      stock[stock-data Lambda]
+      proc[stock-data-to-dynamo Lambda]
+      cache[cache-flush Lambda]
+      backend[main-backend Lambda]
+    end
+
+    subgraph "Storage"
+      s3data[S3 data bucket]
+      s3build[S3 build data bucket]
+    end
+
+    subgraph "DynamoDB"
+      dynamo[DynamoDB ticks]
+    end
+
+    subgraph "CloudFront"
+      distribution[CloudFront CDN cache]
+    end
+
+    api[API Gateway]
   end
 
-  subgraph "Clients"
-    webfrontend[web app]
-    mobilefrontend[mobile app]
+  subgraph "Github CI/CD"
+    gha_build[GitHub Build Actions]
+    gha_deploy[GitHub Deploy Actions]
   end
 
-  api --> webfrontend
-  api --> mobilefrontend
+  alpha -->|polling| stock
+  cron -->|schedule| stock
+  stock -->|write json| s3data
+  s3data -->|read json| proc
+  proc -->|write to table| dynamo
+  dynamo -->|read| backend
+  backend -->|serve API| api
+  distribution --> |read & cache| s3data
+
+  gha_build -->|upload artifacts| s3build
+  gha_deploy -->|terraform apply| s3build
+  gha_deploy -->|terraform apply| Lambdas & infra
+
+  api -->|serve| webfrontend[web app]
+  api -->|serve| mobilefrontend[mobile app]
+
+  webfrontend -->|static files| distribution

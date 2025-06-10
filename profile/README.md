@@ -44,8 +44,8 @@ flowchart TB
       dynamo[DynamoDB ticks]
     end
 
-    subgraph "CloudFront"
-      distribution[CloudFront CDN cache]
+    subgraph "CloudFront or bucket cache"
+      distribution[static file cache]
     end
 
     api[API Gateway]
@@ -63,7 +63,7 @@ flowchart TB
   proc -->|write to table| dynamo
   dynamo -->|read| backend
   backend -->|API requests| api
-  distribution --> |read frontend static files & cache| s3data
+  distribution --> |read & cache files| s3data
 
   gha_build -->|upload artifacts| s3build
   gha_deploy -->|terraform apply| AWSCloud

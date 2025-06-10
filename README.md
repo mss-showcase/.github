@@ -52,13 +52,13 @@ flowchart TB
   s3data -->|read json| proc
   proc -->|write to table| dynamo
   dynamo -->|read| backend
-  backend -->|serve API| api
+  backend -->|API requests| api
   distribution --> |read frontend static files & cache| s3data
 
   gha_build -->|upload artifacts| s3build
   gha_deploy -->|terraform apply| AWSCloud
 
-  api -->|serve| webfrontend[web app]
-  api -->|serve| mobilefrontend[mobile app]
+  api -->|API requests| webfrontend[web app]
+  api -->|API requests| mobilefrontend[mobile app]
 
   webfrontend -->|static files| distribution

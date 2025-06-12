@@ -73,3 +73,19 @@ flowchart TB
 
   webfrontend -->|static files| distribution
 ```
+
+# A screenshot from the current frontend
+
+![webapp screenshot](mss-webapp.png)
+
+As you can see the terraform scripts of the mss-infra project in this phase can reliably 
+
+ * create the necessary buckets (for build and for data)
+ * deploy each lambda to AWS
+ * set up the correct roles, permissions and policies in AWS IAM for the lambdas
+ * configure the AWS gateway
+
+# TODOs
+
+ * The webapp deployment - it requires a new S3 bucket and static hosting
+ * The React Native webapp - I am using to use Expo for that and the EAS build server in github builds - it needs to be finished

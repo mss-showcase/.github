@@ -9,14 +9,18 @@ We are building a modular, AWS-based microservice showcase project focused on st
 We welcome contributions from the community! Whether it’s improving our Lambdas, enhancing Terraform infrastructure code, or building out frontend apps, your input helps us grow. Check our repositories for open issues and feel free to submit pull requests or open discussions.
 
 👩‍💻 **Resources**  
-- The [MSS Showcase GitHub org](https://github.com/mss-showcase) contains separate repositories for build, deploy workflows, Lambda functions, and frontend apps.  
+- The [MSS Showcase GitHub org](https://github.com/mss-showcase) contains separate repositories for deploy scripts configured a CloudFront Distribution (but that is too complex to configure and it is too , deploy much for this showcase - therefore I will switch to s3 static web hosting)workflows, Lambda functions, and frontend apps.  
 - Our infrastructure is defined via Terraform with upsert workflows.  
 - The Lambdas are mostly Node.js based, with GitHub Actions automating build and deploy pipelines.  
 
 🍿 **Fun Fact**  
 Our team runs on coffee and coding snacks while crafting scalable serverless solutions!  
 
-# ** The planned architecture **
+# A screenshot from the current frontend
+
+![webapp screenshot](mss-webapp.png)
+
+# ** The current architecture **
 
 ```mermaid
 flowchart TB
@@ -74,9 +78,7 @@ flowchart TB
   webfrontend -->|static files| distribution
 ```
 
-# A screenshot from the current frontend
-
-![webapp screenshot](mss-webapp.png)
+# Where are we now?
 
 As you can see the terraform scripts of the mss-infra project in this phase can reliably 
 
@@ -88,4 +90,5 @@ As you can see the terraform scripts of the mss-infra project in this phase can 
 # TODOs
 
  * The webapp deployment - it requires a new S3 bucket and static hosting
- * The React Native webapp - I am using to use Expo for that and the EAS build server in github builds - it needs to be finished
+ * The React Native webapp - it must be uploaded to the s3 bucket of the webapp and I need to place a link to be able to download it
+ * CloudFront - one of the deploy scripts configured a CloudFront Distribution (but that is too complex to configure and it is too much for this showcase - therefore I will switch to s3 static web hosting)

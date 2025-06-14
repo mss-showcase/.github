@@ -48,10 +48,6 @@ flowchart TB
       dynamo[DynamoDB ticks]
     end
 
-    subgraph "CloudFront or bucket cache"
-      distribution[static file cache]
-    end
-
     api[API Gateway]
   end
 
@@ -67,15 +63,15 @@ flowchart TB
   proc -->|write to table| dynamo
   dynamo -->|read| backend
   backend -->|API requests| api
-  distribution --> |read & cache files| s3data
+  s3data --> |static web hosting| webfrontend[web app]
 
   gha_build -->|upload artifacts| s3build
   gha_deploy -->|terraform apply| AWSCloud
 
-  api -->|API requests| webfrontend[web app]
+  api -->|API requests| webfrontend
   api -->|API requests| mobilefrontend[mobile app]
 
-  webfrontend -->|static files| distribution
+  webfrontend -->|static files| s3data
 ```
 
 # Where are we now?
@@ -86,9 +82,8 @@ As you can see the terraform scripts of the mss-infra project in this phase can 
  * deploy each lambda to AWS
  * set up the correct roles, permissions and policies in AWS IAM for the lambdas
  * configure the AWS gateway
+ * The webapp deployment - it required a new S3 bucket and static hosting (CloudFront configuration has been dropped for the sake of simplicity)
 
 # TODOs
 
- * The webapp deployment - it requires a new S3 bucket and static hosting
- * The React Native webapp - it must be uploaded to the s3 bucket of the webapp and I need to place a link to be able to download it
- * CloudFront - one of the deploy scripts configured a CloudFront Distribution (but that is too complex to configure and it is too much for this showcase - therefore I will switch to s3 static web hosting)
+ * The mobile app - instead of the Expo app, a new mobile app will be created (technology to be decided)

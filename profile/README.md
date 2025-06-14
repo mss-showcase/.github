@@ -43,6 +43,7 @@ flowchart TB
       s3data[S3 data bucket]
       s3build[S3 build data bucket]
 	  s3webhosting[S3 web hosting bucket]
+	  
     end
 
     subgraph "DynamoDB"
@@ -64,12 +65,12 @@ flowchart TB
   proc -->|write to table| dynamo
   dynamo -->|read| backend
   backend -->|API requests| api
-  s3webhosting --> |static web hosting| webfrontend[web app]
 
   gha_build -->|upload artifacts| s3build
   gha_deploy -->|terraform apply| AWSCloud
-
-  webfrontend -->|API requests| api
+  api -->|webapp files|s3webhosting
+  browser -->|webapp files| api
+  browser -->|API requests| api
   mobilefrontend[mobile app] -->|API requests| api
 ```
 

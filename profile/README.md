@@ -24,7 +24,7 @@ To make this even funnier, I did this with (near) zero AWS, Github Action, Terra
 
 ## Where I am now?
 
-As you can see the terraform scripts of the mss-infra project in this phase can reliably 
+As you can see the terraform scripts of the mss-infra-core and mss-infra project in this phase can reliably 
 
  * create the necessary buckets (for build and for data)
  * deploy each lambda to AWS
@@ -34,7 +34,8 @@ As you can see the terraform scripts of the mss-infra project in this phase can 
 
 ## TODOs
 
- * The mobile app - instead of the Expo app, a new mobile app will be created (technology to be decided)
+ * Some prediction - sentiment analysis of articles from RSS feeds, TA analysis, funda analysis, maybe some generative AI prompt based opinion - and a conclusion buy or sell? will see what can be done
+ * The mobile app - instead of the Expo app, a new mobile app will be created (technology to be decided) 
 
 ## Give it a try!
 

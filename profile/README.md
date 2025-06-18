@@ -2,8 +2,10 @@
 
 Welcome to the MSS Showcase GitHub Organization!
 
-### About Me
+### About this project
 I am building a modular, AWS-based microservice showcase project focused on stock market data processing and analysis. My project demonstrates best practices using AWS Lambda, DynamoDB, S3, EventBridge, API Gateway, and modern frontend technologies like React — all carefully optimized to run within the AWS Free Tier.
+
+The application in AWS is fetching the data from Alpha Vantage with the applicable time window (30 mins) that can keep this project in the free plan - so in case of sideways market you will see a near horizontal line, so it is not an error of the code - you have to zoom in.
 
 ## Resources
 - The [MSS Showcase GitHub org](https://github.com/mss-showcase) contains separate repositories for (github action + terraform) deploy scripts, configured a CloudFront Distribution (but that is too complex to configure and it is too , deploy much for this showcase - therefore I will switch to s3 static web hosting for now), Lambda functions, and a simple frontend app.

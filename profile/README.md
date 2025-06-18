@@ -24,17 +24,20 @@ Our team runs on coffee and coding snacks while crafting scalable serverless sol
 
 ```mermaid
 flowchart TB
-  subgraph "External"
-    alpha[Alpha Vantage REST API]
+  subgraph "Alpha Vantage (External)"
+    alphastockapi[Alpha Vantage ticks REST API]
+    alphafundaapi[Alpha Vantage fundamentals REST API]
   end
 
   subgraph "AWSCloud"
     subgraph "Event scheduling"
-      cron[EventBridge cron]
+      cron30m[EventBridge cron: every 30 mins, 9:00-17:30 on workdays]
+      cronmonthly[EventBridge cron: every month]
     end
     
     subgraph "Lambdas"
-      stock[stock-data Lambda]
+      stocktick[stock-data Lambda]
+      stockfundamentals[stock-fundamentals Lambda]
       proc[stock-data-to-dynamo Lambda]
       backend[main-backend Lambda]
     end
@@ -42,12 +45,12 @@ flowchart TB
     subgraph "Storage"
       s3data[S3 data bucket]
       s3build[S3 build data bucket]
-	  s3webhosting[S3 web hosting bucket]
-	  
+      s3webhosting[S3 web hosting bucket]  
     end
 
     subgraph "DynamoDB"
-      dynamo[DynamoDB ticks]
+      dynamoticks[DynamoDB ticks]
+      dynamofundamentals[DynamoDB fundamentals]
     end
 
     api[API Gateway]
@@ -58,12 +61,17 @@ flowchart TB
     gha_deploy[GitHub Deploy Actions]
   end
 
-  alpha -->|polling| stock
-  cron -->|schedule| stock
-  stock -->|write json| s3data
+  stocktick -->|polling| alphastockapi
+  stockfundamentals -->|polling| alphafundaapi
+  cron30m -->|schedule| stocktick
+  cronmonthly -->|schedule| stockfundamentals
+  stocktick -->|write json| s3data
+  stockfundamentals -->|write json| s3data
   s3data -->|read json| proc
-  proc -->|write to table| dynamo
-  dynamo -->|read| backend
+  proc -->|write ticks to table| dynamoticks
+  proc -->|write fundamentals to table| dynamofundamentals
+  dynamoticks -->|read| backend
+  dynamofundamentals -->|read| backend
   backend -->|API requests| api
 
   gha_build -->|upload artifacts| s3build

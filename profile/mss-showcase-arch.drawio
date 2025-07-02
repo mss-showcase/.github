@@ -57,7 +57,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="jOvSbTWc-YH8an7H_u_1-48" value="Text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" parent="jOvSbTWc-YH8an7H_u_1-47" vertex="1" connectable="0">
+        <mxCell id="jOvSbTWc-YH8an7H_u_1-48" value="read" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" parent="jOvSbTWc-YH8an7H_u_1-47" vertex="1" connectable="0">
           <mxGeometry x="0.2941" y="-1" relative="1" as="geometry">
             <mxPoint x="9" y="59" as="offset" />
           </mxGeometry>
@@ -177,7 +177,7 @@
         </mxCell>
         <mxCell id="hW7h_ZyGCtbWcpeAUf1v-8" value="read" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" parent="hW7h_ZyGCtbWcpeAUf1v-7" vertex="1" connectable="0">
           <mxGeometry x="0.641" y="-1" relative="1" as="geometry">
-            <mxPoint as="offset" />
+            <mxPoint y="10" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hW7h_ZyGCtbWcpeAUf1v-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;" parent="jOvSbTWc-YH8an7H_u_1-9" source="hW7h_ZyGCtbWcpeAUf1v-11" target="hW7h_ZyGCtbWcpeAUf1v-14" edge="1">

@@ -27,20 +27,21 @@ To make this even funnier, I did this with (near) zero AWS, Github Action, Terra
 
 **Current state of the subprojects:**
 
-- **mss-infra-core**: Provisions and manages core AWS infrastructure (S3 buckets, DynamoDB, static web hosting) using Terraform, with automated deployment via GitHub Actions.
-- **mss-infra**: Manages organization-level variables/secrets and orchestrates deployment of all Lambda functions and API Gateway in a recommended order.
+- **mss-infra-core**: Provisions and manages core AWS infrastructure (S3 buckets, DynamoDB, Cloudfront web hosting) using Terraform, with automated deployment via GitHub Actions.
+- **mss-infra**: Manages organization-level variables/secrets and orchestrates deployment of all Lambda functions and API Gateway, configures CloudFront and other AWS resources in a recommended order.
 - **mss-stock-data-source**: Fetches stock data (ticks and fundamentals) for hard-coded tickers from Alpha Vantage, aggregates and uploads gzipped JSON to S3.
 - **mss-stock-data-to-dynamo**: Lambda reads gzipped JSON from S3 and loads records into DynamoDB.
 - **mss-financial-sentiment-lambda**: Two Lambdas—one collects news from RSS feeds, the other processes articles for sentiment analysis and stores results in DynamoDB.
 - **mss-backend**: Node.js Lambda (Express) serving stock, fundamentals, technical analysis, and sentiment data via API Gateway. Also provides buy/sell/neutral suggestions.
 - **mss-frontend**: Responsive React web frontend (Vite + Redux, monorepo) deployed to S3 static hosting. Local development and CI/CD supported via pnpm.
 
+- **AWS Cognito and Google OAuth**: backend- and frontend level integration
+
 > Each direct subfolder contains its own README.md with more details.
 
 ## TODOs
 
-
-* User management and OAuth.
+* User management in admin dashboard, adding and removing watched tickers
 * User-related features (portfolio handling, maybe user-defined ticker data fetching).
 * Admin dashboard to gain insight and manage internal operations to some extent.
 * Expand analysis and prediction features by adding new perspectives and possibly generative AI-based suggestions.
@@ -52,4 +53,4 @@ To make this even funnier, I did this with (near) zero AWS, Github Action, Terra
 
 You can try this webapp in AWS until approximately 2026.06.01, or until AWS starts charging for hosting—whichever comes first.
 
-http://mss-webhosting-bucket.s3-website.eu-north-1.amazonaws.com/
+https://dgjqblpal7nk2.cloudfront.net/

@@ -32,6 +32,29 @@ As you can see the terraform scripts of the mss-infra-core and mss-infra project
  * configure the AWS gateway
  * The webapp deployment - it required a new S3 bucket and static hosting (CloudFront configuration has been dropped for the sake of simplicity)
 
+## 🐳 Local Development Environment
+
+I've created a comprehensive **Docker-based local development environment** (`mss-localdevenv`) that lets you run the entire MSS stack on your Windows 11 machine without needing AWS:
+
+**Features:**
+- 🌐 **Interactive Dashboard** at http://localhost:8080 - One-click access to all services
+- 🪣 **MinIO** (S3 replacement) - Local object storage with web console
+- 📊 **DynamoDB Local** - NoSQL database with admin UI
+- ☁️ **LocalStack** - AWS services emulation (API Gateway, SQS, Lambda)
+- 📬 **ElasticMQ** - SQS message queue with monitoring
+- 🗄️ **Redis** - Caching layer
+- 📧 **MailHog** - Email testing interface
+
+**Easy Setup:**
+```powershell
+cd mss-localdevenv
+docker-compose up -d                    # Start infrastructure
+.\scripts\init-local-services.ps1       # Initialize services
+.\scripts\start-dev.ps1                 # Start applications
+```
+
+The local environment includes PowerShell scripts for health checks, log viewing, data collection triggers, and more. Perfect for development and testing without AWS costs!
+
 ## TODOs
 
  * Some prediction - sentiment analysis of articles from RSS feeds, TA analysis, funda analysis, maybe some generative AI prompt based opinion - and a conclusion buy or sell? will see what can be done
